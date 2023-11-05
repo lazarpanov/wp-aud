@@ -5,6 +5,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import mk.ukim.finki.wpaud.model.Category;
+import mk.ukim.finki.wpaud.service.CategoryService;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,38 +14,15 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import static mk.ukim.finki.wpaud.bootstrap.DataHolder.categories;
+
 @WebServlet(name = "category-servlet", urlPatterns = "/servlet/category")
 public class CategoryServlet extends HttpServlet {
-    class Category {
-        private String name;
-        private String desc;
 
-        public Category(String name, String desc) {
-            this.name = name;
-            this.desc = desc;
-        }
+    private final CategoryService categoryService;
 
-        public String getName() {
-            return name;
-        }
-
-        public String getDesc() {
-            return desc;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-    }
-
-    private List<Category> categoryList = null;
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        this.categoryList = new ArrayList<>();
-        this.categoryList.add(new Category("Software", "Software desc"));
-        this.categoryList.add(new Category("Books", "Books desc"));
+    public CategoryServlet(CategoryService categoryService) {
+        this.categoryService = categoryService;
     }
 
     @Override
@@ -61,7 +40,7 @@ public class CategoryServlet extends HttpServlet {
         out.format("Client Agent: %s", clientAgent);
         out.println("<h3>Category List</h3>");
         out.write("<ul>");
-        categoryList.stream().forEach(category -> out.format("<li>%s %s</li>", category.getName(), category.getDesc()));
+        categories.stream().forEach(category -> out.format("<li>%s %s</li>", category.getName(), category.getDesc()));
         out.write("</ul>");
         out.println("<h3> Add a category</h3>");
         out.println("<form method='POST' action='/servlet/category'>");
@@ -80,11 +59,7 @@ public class CategoryServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String categoryName = req.getParameter("name");
         String categoryDesc = req.getParameter("description");
-        addCategory(categoryName, categoryDesc);
+        categoryService.create(categoryName, categoryDesc);
         resp.sendRedirect("/servlet/category");
-    }
-
-    public void addCategory(String name, String desc) {
-        categoryList.add(new Category(name,desc));
     }
 }
