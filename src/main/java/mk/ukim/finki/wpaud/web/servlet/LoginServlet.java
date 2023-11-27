@@ -15,7 +15,7 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
 
-@WebServlet(name = "login-servlet", urlPatterns = "/login")
+@WebServlet(name = "login-servlet", urlPatterns = "/servlet/login")
 public class LoginServlet extends HttpServlet {
     private final AuthService authService;
     private final SpringTemplateEngine springTemplateEngine;

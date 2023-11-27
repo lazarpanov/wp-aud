@@ -1,19 +1,22 @@
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Login form</title>
-</head>
-<body>
-<form th:method="POST" th:action="@{/login}">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username"/><br/>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password"/><br/><br/>
+<div class="container" xmlns:th="http://www.thymeleaf.org">
+    <form class="form-signin mt-xl-5" method="post" action="/login">
+        <h2 class="form-signin-heading">Sign in</h2>
+        <p>
+            <label for="username" class="sr-only">Username</label>
+            <input type="text" id="username" name="username" class="form-control" placeholder="Username" required=""
+                   autofocus="">
+        </p>
+        <p>
+            <label for="password" class="sr-only">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password"
+                   required="">
+        </p>
 
-    <div th:if="${hasError}" class="error">
-        <div th:text="${error}"></div>
-    </div>
+        <th:block th:if="${hasError}">
+            <div th:text="${error}" class="text-danger"></div>
+        </th:block>
 
-    <input type="submit" th:value="Submit">
-</form>
-</body>
-</html>
+        <button id="submit" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    </form>
+</div>
+
