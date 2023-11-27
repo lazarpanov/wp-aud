@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add-product</title>
+</head>
+<body>
+<form action="/products/add" method="post">
+    <label for="name">Product name</label>
+    <input type="text" id="name" name="name" th:value="(${product} != null ? ${product.getName()} : '' )" required placeholder="Enter product name">
+
+    <label for="price">Price</label>
+    <input type="text" id="price" name="price" th:value="(${product} != null ? ${product.getPrice()} : '' )" required placeholder="Enter price">
+
+    <label for="quantity">Quantity</label>
+    <input type="text" id="quantity" name="quantity" th:value="(${product} != null ? ${product.getQuantity()} : '' )" required placeholder="Enter quantity">
+    <div>
+        <label>Category</label>
+        <select name="category">
+            <option th:if="${product} != null" th:selected="${product.getCategory() != null && product.getCategory().getId() == cat.getId()}" th:each="cat : ${categories}" th:text="${cat.getName()}" th:value="${cat.getId()}">
+
+            </option>
+            <option th:if="${product} == null" th:each="cat : ${categories}" th:text="${cat.getName()}" th:value="${cat.getId()}">
+
+            </option>
+        </select>
+    </div>
+    <div>
+        <label>Manufacturer</label>
+        <select name="manufacturer">
+            <option th:if="${product} != null" th:selected="${product.getManufacturer() != null && product.getManufacturer().getId() == manu.getId()}" th:each="manu : ${manufacturers}" th:text="${manu.getName()}" th:value="${manu.getId()}">
+
+            </option>
+            <option th:if="${product} == null" th:each="manu : ${manufacturers}" th:text="${manu.getName()}" th:value="${manu.getId()}">
+
+            </option>
+        </select>
+    </div>
+    <button type="submit">Submit</button>
+    <a type="button" href="/products">Back</a>
+</form>
+</body>
+</html>
