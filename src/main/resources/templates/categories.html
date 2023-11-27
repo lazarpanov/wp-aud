@@ -4,6 +4,9 @@
     <meta charset="utf-8" />
 </head>
 <body>
+<th:block>
+    <div th:text="${userViews?:0}"></div>
+</th:block>
 <h2>Info about our request</h2>
 <div>IP Address:<th:block th:text="${ipAddress}"></th:block></div>
 <div>Client Agent:<th:block th:text="${clientAgent}"></th:block></div>
