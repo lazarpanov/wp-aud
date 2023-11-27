@@ -7,6 +7,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import mk.ukim.finki.wpaud.model.Category;
 import mk.ukim.finki.wpaud.service.CategoryService;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.spring6.SpringTemplateEngine;
+import org.thymeleaf.web.IWebExchange;
+import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,39 +24,30 @@ import static mk.ukim.finki.wpaud.bootstrap.DataHolder.categories;
 public class CategoryServlet extends HttpServlet {
 
     private final CategoryService categoryService;
+    private final SpringTemplateEngine springTemplateEngine;
 
-    public CategoryServlet(CategoryService categoryService) {
+    public CategoryServlet(CategoryService categoryService, SpringTemplateEngine springTemplateEngine) {
         this.categoryService = categoryService;
+        this.springTemplateEngine = springTemplateEngine;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter out = resp.getWriter();
-        String ipAddr = req.getRemoteAddr();
-        String clientAgent = req.getHeader("User-Agent");
+        IWebExchange webExchange = JakartaServletWebApplication
+                .buildApplication(getServletContext())
+                .buildExchange(req, resp);
 
-        out.write("<html>");
-        out.write("<head>");
-        out.write("</head>");
-        out.write("<body>");
-        out.println("<h3>User info:</h3>");
-        out.format("IP Address: %s <br>", ipAddr);
-        out.format("Client Agent: %s", clientAgent);
-        out.println("<h3>Category List</h3>");
-        out.write("<ul>");
-        categories.stream().forEach(category -> out.format("<li>%s %s</li>", category.getName(), category.getDesc()));
-        out.write("</ul>");
-        out.println("<h3> Add a category</h3>");
-        out.println("<form method='POST' action='/servlet/category'>");
-        out.println("<label for='name'>Name:</label>");
-        out.println("<input id='name' type='text' name='name' />");
-        out.println("<label for='description'>Description:</label>");
-        out.println("<input id='description' type='text' name='description' />");
-        out.println("<input type='submit' value='Submit'/>");
-        out.println("</form>");
-        out.write("</body>");
-        out.write("</html>");
-        out.flush();
+        WebContext context =  new WebContext(webExchange);
+        context.setVariable("categories", categoryService.listCategories());
+        context.setVariable("ipAddress", req.getRemoteAddr());
+        context.setVariable("clientAgent", req.getHeader("User-Agent"));
+
+        springTemplateEngine.process(
+                "categories.html",
+                context,
+                resp.getWriter()
+        );
+
     }
 
     @Override

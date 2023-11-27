@@ -57,9 +57,7 @@ public class LoginServlet extends HttpServlet {
             context.setVariable("error", ex.getMessage());
             springTemplateEngine.process("login.html", context, resp.getWriter());
         }
-        if (user != null) {
             req.getSession().setAttribute("user", user);
             resp.sendRedirect("/servlet/category");
-        }
     }
 }
