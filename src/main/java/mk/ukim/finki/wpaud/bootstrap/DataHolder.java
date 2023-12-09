@@ -1,10 +1,7 @@
 package mk.ukim.finki.wpaud.bootstrap;
 
 import jakarta.annotation.PostConstruct;
-import mk.ukim.finki.wpaud.model.Category;
-import mk.ukim.finki.wpaud.model.Manufacturer;
-import mk.ukim.finki.wpaud.model.Product;
-import mk.ukim.finki.wpaud.model.User;
+import mk.ukim.finki.wpaud.model.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -17,8 +14,10 @@ public class DataHolder {
     public static List<User> users = null;
     public static List<Manufacturer> manufacturers = null;
     public static List<Product> products = null;
+    public static List<ShoppingCart> shoppingCarts = null;
     @PostConstruct
     public void init() {
+        shoppingCarts = new ArrayList<>();
         categories = new ArrayList<>();
         users = new ArrayList<>();
         manufacturers = new ArrayList<>();

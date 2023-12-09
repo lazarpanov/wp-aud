@@ -28,7 +28,11 @@
                                 <form th:method="delete" th:action="@{'/products/delete/{id}' (id = ${product.getId()})}">
                                     <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                 </form>
+                                <form th:method="post" th:action="@{'/shopping-cart/add-product/{id}' (id = ${product.getId()})}">
+                                    <button type="submit" class="btn btn-sm btn-danger">Add product to cart</button>
+                                </form>
                                 <a th:href="@{'/products/edit-form/{id}' (id = ${product.getId()})}">Edit</a>
+
                             </td>
                         </tr>
                     </tbody>

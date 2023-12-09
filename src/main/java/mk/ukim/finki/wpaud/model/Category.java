@@ -12,6 +12,5 @@ public class Category {
         this.id = (long) (Math.random() * 1000);
         this.name = name;
         this.desc = desc;
-        this.id = id;
     }
 }
